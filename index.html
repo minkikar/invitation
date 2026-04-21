@@ -100,14 +100,13 @@
         
         <img src="invitation-card.jpeg" class="invite-card">
         
-        <a href="https://www.google.com/maps/search/?api=1&query=18.893587,77.856122" 
-   class="action-btn" 
-   target="_blank">
-    📍 address
-</a>
+        <button onclick="triggerNavigation()" class="action-btn">
+    📍 Navigate to Our Home
+</button>
     </div>
 
     <script>
+
         const gate = document.getElementById('gate');
         const videoLayer = document.getElementById('video-layer');
         const inviteVideo = document.getElementById('inviteVideo');
@@ -119,7 +118,34 @@
             inviteVideo.muted = false;
             inviteVideo.play();
         }
+        function triggerNavigation() {
+        const lat = 18.893587;
+        const lon = 77.856122;
+        const addr = "Vinayak+Nagar+Dharmabad";
 
+        // 1. Try Google Maps Native App Protocol (Works for most Android/iOS)
+        const googleMapsAppUrl = `comgooglemaps://?q=${lat},${lon}&zoom=15`;
+        
+        // 2. Fallback for Android Intent
+        const androidIntent = `intent://www.google.com/maps/dir/?api=1&destination=${lat},${lon}#Intent;scheme=http;package=com.google.android.apps.maps;end`;
+
+        // 3. Universal Web Fallback
+        const webUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+
+        // Logic to detect and trigger
+        if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+            // Try iOS App first
+            window.location.href = googleMapsAppUrl;
+            // If it doesn't open in 500ms, go to web
+            setTimeout(() => { window.location.href = webUrl; }, 500);
+        } else if (navigator.userAgent.match(/Android/i)) {
+            // Use Android Intent (The most powerful way to force open the app)
+            window.location.href = androidIntent;
+        } else {
+            // Laptop/Desktop
+            window.open(webUrl, '_blank');
+        }
+    }
         // Switch to single-frame invite when video ends
         inviteVideo.onended = function() {
             videoLayer.style.display = 'none';
