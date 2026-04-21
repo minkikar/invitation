@@ -22,21 +22,27 @@
             margin: 0; padding: 0; 
             width: 100%; height: 100%;
             background-color: #fffaf0; font-family: 'Segoe UI', sans-serif;
-            overflow: hidden; /* Prevents scrolling anywhere */
+            overflow: hidden; 
+            position: fixed; 
         }
 
-        /* Common Container for all Views */
         .view-container {
-            position: fixed; inset: 0;
-            width: 100vw; height: 100vh;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            text-align: center; box-sizing: border-box;
-            padding: 15px; background-color: #fffaf0;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100dvh;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between; 
+            text-align: center;
+            box-sizing: border-box;
+            padding: 20px 15px 30px 15px;
+            background-color: #fffaf0;
         }
 
         /* 1. Splash Screen */
-        #gate { z-index: 100; background: radial-gradient(circle, #fff, #ffe0b2); }
+        #gate { z-index: 100; background: radial-gradient(circle, #fff, #ffe0b2); display: flex; justify-content: center; }
         .gate-btn {
             padding: 20px 40px; font-size: 1.2rem; border: none;
             background: var(--marigold); color: white; border-radius: 50px;
@@ -44,24 +50,31 @@
         }
 
         /* 2. Video Layer */
-        #video-layer { z-index: 50; background: black; display: none; }
+        #video-layer { z-index: 50; background: black; padding: 0; }
         video { width: 100%; height: 100%; object-fit: cover; }
 
         /* 3. Invitation Page */
-        #invite-page { z-index: 10; display: none; justify-content: space-between; }
+        #invite-page { z-index: 10; }
         
+        .header-text { flex-shrink: 0; margin-bottom: 5px; }
+
         .invite-card {
-            max-height: 50vh; /* Scaled to ensure text and button fit in 1 frame */
-            max-width: 95%; border-radius: 10px;
+            flex-grow: 1;
+            flex-shrink: 1;
+            max-height: 50vh; 
+            max-width: 95%;
+            border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             object-fit: contain;
+            margin: 10px 0;
         }
 
         /* 4. Map Page */
-        #map-page { z-index: 20; display: none; }
+        #map-page { z-index: 20; }
 
         .action-btn {
-            width: 85%; max-width: 300px; padding: 15px;
+            flex-shrink: 0;
+            width: 85%; max-width: 300px; min-height: 55px;
             text-decoration: none; border: none; border-radius: 50px;
             font-weight: bold; color: white;
             background: linear-gradient(45deg, var(--marigold), #D4AF37);
@@ -72,11 +85,11 @@
         .back-btn {
             background: none; border: 1px solid var(--deep-red);
             color: var(--deep-red); padding: 8px 20px; border-radius: 20px;
-            margin-bottom: 15px; cursor: pointer;
+            margin-bottom: 10px; cursor: pointer;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .fade-in { animation: fadeIn 0.8s ease-in forwards; }
+        .fade-in { animation: fadeIn 0.5s ease-in forwards; }
     </style>
 </head>
 <body>
@@ -93,11 +106,12 @@
     </div>
 
     <div id="invite-page" class="view-container fade-in">
-        <h2 style="color: var(--deep-red); margin: 0;">Vastu Shanti & Griha Pravesh</h2>
-        
-        <div style="font-size: 0.9rem; color: #333; line-height: 1.4;">
-            <strong>Vinayak Nagar, Near DYSP Office,</strong><br>
-            Dharmabad, Tq. Dharmabad, Dist. Nanded.
+        <div class="header-text">
+            <h2 style="color: var(--deep-red); margin: 5px 0; font-size: 1.3rem;">Vastu Shanti & Griha Pravesh</h2>
+            <div style="font-size: 0.85rem; color: #333; line-height: 1.4;">
+                <strong>Vinayak Nagar, Near DYSP Office,</strong><br>
+                Dharmabad, Tq. Dharmabad, Dist. Nanded.
+            </div>
         </div>
 
         <img src="invitation-card.jpeg" class="invite-card">
@@ -108,19 +122,20 @@
     </div>
 
     <div id="map-page" class="view-container fade-in">
-        <button class="back-btn" onclick="showInvitePage()">← Back to Invite</button>
+        <div style="width: 100%;">
+            <button class="back-btn" onclick="showInvitePage()">← Back to Invite</button>
+            <h3 style="color: var(--deep-red); margin: 0 0 10px 0;">Our Location</h3>
+        </div>
         
-        <h3 style="color: var(--deep-red); margin: 0 0 10px 0;">Our Location</h3>
-        
-        <div style="width: 100%; height: 55vh; border-radius: 12px; overflow: hidden; border: 2px solid var(--marigold);">
+        <div style="width: 100%; height: 50vh; border-radius: 12px; overflow: hidden; border: 2px solid var(--marigold);">
             <iframe 
                 width="100%" height="100%" frameborder="0" 
-                src="https://maps.google.com/maps?q=18.893587,77.856122&z=15&output=embed">
+                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3765.23456!2d77.856122!3d18.893587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTjCsDUzJzM2LjkiTiA3N8KwNTEnMjIuMCJF!5e0!3m2!1sen!2sin!4v1700000000000">
             </iframe>
         </div>
 
-        <a href="https://www.google.com/maps/dir/?api=1&destination=18.893587,77.856122" class="action-btn" style="margin-top: 15px;">
-            🚀 Open in Maps App
+        <a href="https://www.google.com/maps/dir/?api=1&destination=18.893587,77.856122" class="action-btn">
+            🚀 Open Google Maps App
         </a>
     </div>
 
@@ -133,31 +148,34 @@
 
         function startExperience() {
             gate.style.display = 'none';
-            videoLayer.style.display = 'block';
+            videoLayer.style.display = 'flex';
             inviteVideo.muted = false;
-            inviteVideo.play();
+            inviteVideo.play().catch(e => {
+                // Fallback if autoplay is blocked
+                console.log("Autoplay blocked, showing invite");
+                showInvitePage();
+            });
         }
 
-        // When video ends, swap to the Invitation Page
         inviteVideo.onended = function() {
             videoLayer.style.display = 'none';
             invitePage.style.display = 'flex';
-            
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            }
         };
 
         function showMapPage() {
+            // Force hidden first to reset state
             invitePage.style.display = 'none';
-            mapPage.style.display = 'flex';
+            setTimeout(() => {
+                mapPage.style.display = 'flex';
+            }, 10);
         }
 
         function showInvitePage() {
             mapPage.style.display = 'none';
-            invitePage.style.display = 'flex';
+            setTimeout(() => {
+                invitePage.style.display = 'flex';
+            }, 10);
         }
     </script>
-
 </body>
 </html>
